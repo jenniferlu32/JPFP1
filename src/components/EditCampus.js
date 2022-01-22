@@ -21,14 +21,15 @@ class EditCampus extends React.Component {
     this.setState(campus);
   };
 
-  updateCampus(campus) {
-    this.props.editCampus(campus);
+  updateCampus(ev) {
+    ev.preventDefault()
+    this.props.editCampus(this.state);
   };
 
   render() {
     const { id, name, address, description } = this.state;
     return (
-      <form onSubmit={() => this.updateCampus({ id, name, address, description })}>
+      <form onSubmit={(ev) => this.updateCampus(ev)}>
         <input value={name} onChange={(ev) => this.setState({ name: ev.target.value})}></input>
         <input value={address} onChange={(ev) => this.setState({ address: ev.target.value})}></input>
         <input value={description} onChange={(ev) => this.setState({ description: ev.target.value})}></input>

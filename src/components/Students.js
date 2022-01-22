@@ -18,7 +18,7 @@ const Students = (props) => {
           return ([
             <p key={student.id}>{student.firstName} {student.lastName} - {studentCampus}</p>,
             <Link to={`/students/${student.id}`} key={student.id+'name'}>Details for {student.firstName}</Link>,
-            <button onClick={() => props.deleteStudent(student.id)}>X</button>
+            <button key={student.id+'delete'} onClick={() => props.deleteStudent(student.id)}>X</button>
           ])
         })
       }

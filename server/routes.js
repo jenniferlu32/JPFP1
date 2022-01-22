@@ -49,6 +49,39 @@ router.delete('/students/:id', async(req, res, next) => {
   };
 });
 
+router.put('/students/:id', async(req, res, next) => {
+  try {
+    const student = await Student.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [{ model: Campus }]
+    });
+    await student.update(req.body);
+    res.status(200).send(student);
+  } catch(err) {
+    next(err);
+  };
+});
+
+router.put('/students/unregister/:id', async(req, res, next) => {
+  try {
+    const student = await Student.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [{ model: Campus }]
+    });
+    await student.update({
+      campusId: null,
+      campus: []
+    });
+    res.status(200).send(student);
+  } catch(err) {
+    next(err);
+  };
+});
+
 router.get('/campuses', async(req, res, next) => {
   try {
     const campuses = await Campus.findAll({
@@ -98,8 +131,12 @@ router.delete('/campuses/:id', async(req, res, next) => {
 
 router.put('/campuses/:id', async(req, res, next) => {
   try {
-    const campus = await Campus.findByPk(req.params.id);
-    await campus.update(req.body);
+    const campus = await Campus.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [ { model: Student } ]
+    });
     res.status(200).send(campus);
   } catch(err) {
     next(err);

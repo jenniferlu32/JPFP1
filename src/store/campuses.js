@@ -65,6 +65,13 @@ export const editCampus = (campus) => {
   };
 };
 
+export const unregister = (studentId) => {
+  return async(dispatch) => {
+    const newCampus = (await axios.put(`api/students/unregister/${studentId}`)).data;
+    dispatch(_editCampus(newCampus));
+  };
+};
+
 //reducer
 export default function campusReducer(state = [], action) {
   switch(action.type) {

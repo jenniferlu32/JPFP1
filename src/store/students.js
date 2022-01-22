@@ -4,6 +4,7 @@ import axios from 'axios';
 const GET_STUDENTS = 'GET_STUDENTS';
 const ADD_STUDENT = 'ADD_STUDENT';
 const DELETE_STUDENT = 'DELETE_STUDENT';
+const EDIT_STUDENT = 'EDIT_STUDENT';
 
 //action creaters
 const _getStudents = (students) => {
@@ -24,6 +25,13 @@ const _deleteStudent = (studentId) => {
   return {
     type: DELETE_STUDENT,
     payload: studentId
+  };
+};
+
+const _editStudent = (student) => {
+  return {
+    type: EDIT_STUDENT,
+    payload: student
   };
 };
 
@@ -49,6 +57,21 @@ export const deleteStudent = (studentId) => {
   };
 };
 
+export const editStudent = (student) => {
+  return async(dispatch) => {
+    const newStudent = (await axios.put(`api/students/${student.id}`, student)).data;
+    console.log(newStudent)
+    dispatch(_editStudent(newStudent));
+  };
+};
+
+export const unregister = (studentId) => {
+  return async(dispatch) => {
+    const newStudent = (await axios.put(`api/students/unregister/${studentId}`)).data;
+    dispatch(_editStudent(newStudent));
+  };
+};
+
 //reducers
 export default function studentReducer(state = [], action) {
   switch(action.type) {
@@ -58,6 +81,8 @@ export default function studentReducer(state = [], action) {
       return [...state, action.payload];
     case DELETE_STUDENT:
       return state.filter(student => student.id !== action.payload);
+    case EDIT_STUDENT:
+      return state.map(student => student.id === action.payload.id ? action.payload : student);
     default:
       return state;
   };

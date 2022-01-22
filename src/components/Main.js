@@ -30,10 +30,7 @@ class Main extends React.Component {
         <Nav />
         <Route path='/' exact component={Home}></Route>
         <Route path='/campuses' exact component={() => <Campuses campuses={this.props.campuses} deleteCampus={this.props.deleteCampus}/>}></Route>
-        <Route
-          path={`/campuses/:id`}
-          component={Campus}>
-        </Route>
+        <Route path={`/campuses/:id`} component={Campus}></Route>
         <Route path='/students' exact component={() => <Students students={this.props.students} deleteStudent={this.props.deleteStudent} />}></Route>
         <Route path='/students/:id' component={Student}></Route>
       </Router>
